@@ -17,6 +17,7 @@ public class Bubble : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         rigid.gravityScale = gravityScale;
+
     }
 
     private void FixedUpdate()
