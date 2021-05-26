@@ -70,15 +70,36 @@ public class Player : MonoBehaviour
         {
             collider2D.isTrigger = false;
         }
-        if (rigidbody2D.velocity.y == 0)
+
+        // 다중 점프 막아야함
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            // 다중 점프 막아야함
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                rigidbody2D.AddForce(new Vector2(0, jumpForce));
-                collider2D.isTrigger = true;
-            }
+            bool isGround = IsGround();
+            rigidbody2D.AddForce(new Vector2(0, jumpForce));
+            collider2D.isTrigger = true;
         }
+    }
+    public float groundCheckOffsetX = 0.4f;
+    bool IsGround()
+    {
+        bool result = false;
+
+        if (IsGroundCheckRay(transform.position))
+            return true;
+        if (IsGroundCheckRay(transform.position + new Vector3(-groundCheckOffsetX, 0, 0)))
+            return true;
+        if (IsGroundCheckRay(transform.position + new Vector3(groundCheckOffsetX, 0, 0)))
+            return true;
+
+
+        return result;
+    }
+    bool IsGroundCheckRay(Vector3 pos)
+    {
+        var hit = Physics2D.Raycast(transform.position, new Vector2(0, -1), 1.1f, wallLayer);
+        if (hit.transform)
+            return true;
+        return false;
     }
 
     public GameObject bubble;

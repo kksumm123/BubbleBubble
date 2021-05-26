@@ -22,6 +22,8 @@ public class Monster : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.name == "Player")
+            return;
         transform.rotation =
             new Quaternion(0, (transform.rotation.y == 0 ? 180 : 0), 0, 0);
     }
