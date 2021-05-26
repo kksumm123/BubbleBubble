@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
 
 
         Vector3 position = transform.position;
-        position.x += moveX * speed * Time.deltaTime;
+        position.x += moveX * speed;
         position.x = Mathf.Max(minX, position.x);
         position.x = Mathf.Min(maxX, position.x);
         transform.position = position;
