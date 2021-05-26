@@ -31,6 +31,7 @@ public class Bubble : MonoBehaviour
             if (transform.forward.z > 0)
             { // 앞으로 가고 있다
                 var hit = Physics2D.Raycast(transform.position, new Vector2(1, 0), 100, wallLayer);
+                Debug.Assert(hit.transform != null, "레이어지정해야함", rigidbody2D);
                 float maxX = hit.point.x;
                 pos.x = Mathf.Min(pos.x, maxX);
             }
@@ -52,8 +53,21 @@ public class Bubble : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log($"collision : {collision.transform.name}");
         // 버블이 터질만큼 만힝 붙어 있다면 터트리자.
-        //if(collision 이 벽인가?)
-        ////collision.contacts[0].point  와 나와의 거리를 확인하자. -> 특정 값보다 작다면 터트리자.
+        OnTouchCoillision(collision.transform);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log($"trigger : {collision.transform.name}");
+        OnTouchCoillision(collision.transform);
+    }
+    void OnTouchCoillision(Transform tr)
+    {
+        if (tr.CompareTag("Player"))
+        {
+            //플레이어
+            Destroy(gameObject);
+        }
     }
 }
