@@ -24,6 +24,40 @@ public class Player : MonoBehaviour
         Move();
         // 점프
         Jump();
+        // 아래점프
+        DownJump();
+    }
+    public LayerMask wallLayer;
+    public float downWallCheckY = -1.1f;
+    private void DownJump()
+    {
+        // s키 아래점프
+        // 점프 가능한지 판단
+        // 아래로 광선을 쏴서 벽이 있따면 아래로 점프
+        if (rigidbody2D.velocity.y == 0 && Input.GetKeyDown(KeyCode.S))
+        {
+            var hit = Physics2D.Raycast(
+                transform.position + new Vector3(0, downWallCheckY)
+                , new Vector2(0, -1), 100, wallLayer);
+            if (hit.transform)
+            {
+                Debug.Log($"{hit.point}, {hit.transform.name}");
+                ingDownJump = true;
+                collider2D.isTrigger = true;
+            }
+        }
+    }
+
+
+    bool ingDownJump = false;
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (ingDownJump)
+        {
+            ingDownJump = false;
+            collider2D.isTrigger = false;
+        }
     }
 
     public float jumpForce = 500f;
@@ -32,7 +66,7 @@ public class Player : MonoBehaviour
         // 점프할 때 벽을 뚫어야함
         // 낙하시에는 뚫으면 안됨
         // 속도가 음수일 때, 이전 y값과 비교시 -일 때
-        if (rigidbody2D.velocity.y < 0)
+        if (ingDownJump == false && rigidbody2D.velocity.y < 0)
         {
             collider2D.isTrigger = false;
         }
@@ -58,6 +92,7 @@ public class Player : MonoBehaviour
         }
     }
     public float minX, maxX;
+
     private void Move()
     {
         // WASD, W위로, A왼쪽,S아래, D오른쪽

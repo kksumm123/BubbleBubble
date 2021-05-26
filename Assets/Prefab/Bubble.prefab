@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2349860045347816913}
   - component: {fileID: 2418113847953208382}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 3093548865338609144}
   - component: {fileID: 5056268901432550448}
   - component: {fileID: 315975175398828355}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,8 +204,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveForwardFrame: 6
+  currentFrame: 0
   speed: 1
-  rigid: {fileID: 3093548865338609144}
+  rigidbody2D: {fileID: 0}
   gravityScale: -0.7
 --- !u!114 &315975175398828355
 MonoBehaviour:

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1607365332}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BubbleSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 513319494160420938}
   - component: {fileID: 513319494160420940}
   - component: {fileID: 513319494160420939}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,11 +185,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f667a8c66546a5c47a72db94fc9bc3b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
+  speed: 0.1
   rigidbody2D: {fileID: 0}
   collider2D: {fileID: 0}
   animator: {fileID: 0}
-  jumpForce: 500
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  downWallCheckY: -2.1
+  downJumpTime: 0.4
+  jumpForce: 1100
   bubble: {fileID: 8334333040607535663, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
   bubbleSpawnPos: {fileID: 1607365332}
   minX: -12
