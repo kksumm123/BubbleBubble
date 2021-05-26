@@ -10,6 +10,7 @@ public class SpawnPrefab : MonoBehaviour
     {
         public GameObject prefab;
         public float delayTime;
+        public bool ownRotation = true;
     }
     public SpawnInfo start;
     public SpawnInfo enable;
@@ -42,7 +43,7 @@ public class SpawnPrefab : MonoBehaviour
         if (spawnInfo.prefab == null)
             return;
 
-        if(spawnInfo.delayTime <= 0)
+        if (spawnInfo.delayTime <= 0)
         {
             Instantiate(spawnInfo);
         }
@@ -57,6 +58,7 @@ public class SpawnPrefab : MonoBehaviour
 
     private void Instantiate(SpawnInfo spawnInfo)
     {
-        Instantiate(spawnInfo.prefab, transform.position, transform.rotation);
+        Instantiate(spawnInfo.prefab, transform.position
+            , spawnInfo.ownRotation ? Quaternion.identity : transform.rotation);
     }
 }

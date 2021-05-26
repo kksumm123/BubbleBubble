@@ -15,6 +15,7 @@ public class Bubble : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = 0;
+
     }
 
     public LayerMask wallLayer;
@@ -66,16 +67,14 @@ public class Bubble : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"collision : {collision.transform.name}");
         // 버블이 터질만큼 만힝 붙어 있다면 터트리자.
-        OnTouchCoillision(collision.transform);
+        OnTouchCollision(collision.transform);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"trigger : {collision.transform.name}");
-        OnTouchCoillision(collision.transform);
+        OnTouchCollision(collision.transform);
     }
-    void OnTouchCoillision(Transform tr)
+    void OnTouchCollision(Transform tr)
     {
         if (state == State.FREEFLY)
         {

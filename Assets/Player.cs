@@ -41,7 +41,6 @@ public class Player : MonoBehaviour
                 , new Vector2(0, -1), 100, wallLayer);
             if (hit.transform)
             {
-                Debug.Log($"{hit.point}, {hit.transform.name}");
                 ingDownJump = true;
                 collider2D.isTrigger = true;
             }

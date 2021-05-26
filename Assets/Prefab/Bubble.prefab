@@ -62,6 +62,7 @@ GameObject:
   - component: {fileID: 3093548865338609144}
   - component: {fileID: 5056268901432550448}
   - component: {fileID: 315975175398828355}
+  - component: {fileID: 633796242791326470}
   m_Layer: 7
   m_Name: Bubble
   m_TagString: Untagged
@@ -182,7 +183,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -228,3 +229,31 @@ MonoBehaviour:
   OnDisableLog: 0
   OnDestroyLog: 0
   StopOnLog: 0
+--- !u!114 &633796242791326470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334333040607535663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467ca2d647d47b5478a1315ff134cc9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  start:
+    prefab: {fileID: 0}
+    delayTime: 0
+    ownRotation: 1
+  enable:
+    prefab: {fileID: 0}
+    delayTime: 0
+    ownRotation: 1
+  disable:
+    prefab: {fileID: 0}
+    delayTime: 0
+    ownRotation: 1
+  destroy:
+    prefab: {fileID: 3345528456044668233, guid: 0915f656632c04141b363ec688148b14, type: 3}
+    delayTime: 0
+    ownRotation: 1
