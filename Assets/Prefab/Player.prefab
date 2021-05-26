@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 513319494160420939}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,6 +194,7 @@ MonoBehaviour:
     m_Bits: 512
   downWallCheckY: -2.1
   jumpForce: 1100
+  groundCheckOffsetX: 0.4
   bubble: {fileID: 8334333040607535663, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
   bubbleSpawnPos: {fileID: 1607365332}
   minX: -13

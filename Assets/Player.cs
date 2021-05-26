@@ -75,8 +75,12 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             bool isGround = IsGround();
-            rigidbody2D.AddForce(new Vector2(0, jumpForce));
-            collider2D.isTrigger = true;
+            if (isGround)
+            {
+                rigidbody2D.velocity = Vector2.zero;
+                rigidbody2D.AddForce(new Vector2(0, jumpForce));
+                collider2D.isTrigger = true;
+            }
         }
     }
     public float groundCheckOffsetX = 0.4f;
