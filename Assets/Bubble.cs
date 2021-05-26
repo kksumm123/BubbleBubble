@@ -17,7 +17,7 @@ public class Bubble : MonoBehaviour
         rigidbody2D.gravityScale = 0;
     }
 
-
+    public LayerMask wallLayer;
     // 벽 뚫는 현상 수정되었음, 
     // 벽과 이미 충돌한상태로 생성되면 충돌되지 않음 <- 이 상황에선 버블이 터져야함.
     private void FixedUpdate()
@@ -26,6 +26,21 @@ public class Bubble : MonoBehaviour
         {
             var pos = rigidbody2D.position;
             pos.x += (speed * transform.forward.z);
+            // 버블이 앞으로 가고 있으면 최대 X값을 레이캐스트로 찾자
+            //          뒤로 가고 있으면 최소 x값을 레이캐스트로 찾자
+            if (transform.forward.z > 0)
+            { // 앞으로 가고 있다
+                var hit = Physics2D.Raycast(transform.position, new Vector2(1, 0), 100, wallLayer);
+                float maxX = hit.point.x;
+                pos.x = Mathf.Min(pos.x, maxX);
+            }
+            else
+            { // 뒤로 가고 있다
+                var hit = Physics2D.Raycast(transform.position, new Vector2(-1, 0), 100, wallLayer);
+                float minX = hit.point.x;
+                pos.x = Mathf.Max(pos.x, minX);
+            }
+
             rigidbody2D.position = pos;
         }
         else

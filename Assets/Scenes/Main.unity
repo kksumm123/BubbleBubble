@@ -3813,7 +3813,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -4122,7 +4122,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 961181576}
-  - component: {fileID: 961181575}
   m_Layer: 0
   m_Name: TurnWall
   m_TagString: Untagged
@@ -4130,18 +4129,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &961181575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 961181574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f808f87cd21a1a4b93739273795abad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &961181576
 Transform:
   m_ObjectHideFlags: 0
@@ -4686,10 +4673,6 @@ PrefabInstance:
     - target: {fileID: 1804736683643973787, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3093548865338609144, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
-      propertyPath: m_Constraints
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8334333040607535663, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
       propertyPath: m_Name
