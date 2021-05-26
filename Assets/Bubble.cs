@@ -18,8 +18,11 @@ public class Bubble : MonoBehaviour
     }
 
     public LayerMask wallLayer;
+    private State state;
+
     // 벽 뚫는 현상 수정되었음, 
     // 벽과 이미 충돌한상태로 생성되면 충돌되지 않음 <- 이 상황에선 버블이 터져야함.
+
     private void FixedUpdate()
     {
         if (currentFrame++ < moveForwardFrame)
@@ -46,11 +49,21 @@ public class Bubble : MonoBehaviour
         }
         else
         {
+            state = State.FREEFLY;
             rigidbody2D.gravityScale = gravityScale;
             enabled = false;
         }
     }
 
+    // 버블이 앞으로 나아가는 상태 - 몬스터 닿으면 몬스터 잡힘
+    // 버블이 자유롭게 이동하는 상태 - 플레이어가 닿으면 버블 터짐
+    // 버블이 터지고 있는 상태 - 필요없음
+    enum State
+    {
+        FASTMODE,
+        FREEFLY,
+        NONE
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log($"collision : {collision.transform.name}");
@@ -64,10 +77,13 @@ public class Bubble : MonoBehaviour
     }
     void OnTouchCoillision(Transform tr)
     {
-        if (tr.CompareTag("Player"))
+        if (state == State.FREEFLY)
         {
-            //플레이어
-            Destroy(gameObject);
+            if (tr.CompareTag("Player"))
+            {
+                //플레이어
+                Destroy(gameObject);
+            }
         }
     }
 }
