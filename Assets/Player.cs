@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     new public Rigidbody2D rigidbody2D;
     new public Collider2D collider2D;
     public Animator animator;
+    public Vector2 velo;
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -26,40 +27,61 @@ public class Player : MonoBehaviour
         Jump();
         // 아래점프
         DownJump();
+        //// 속도제한
+        //velo = rigidbody2D.velocity;
+        //velo.y = velo.y < -15f ? -15f : velo.y;
+        //rigidbody2D.velocity = velo;
     }
-    public LayerMask wallLayer;
-    public float downWallCheckY = -1.1f;
-    private void DownJump()
+    public float minX, maxX;
+    private void Move()
     {
-        // s키 아래점프
-        // 점프 가능한지 판단
-        // 아래로 광선을 쏴서 벽이 있따면 아래로 점프
-        if (rigidbody2D.velocity.y == 0 && Input.GetKeyDown(KeyCode.S))
+        // WASD, W위로, A왼쪽,S아래, D오른쪽
+        float moveX = 0;
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) moveX = -1;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) moveX = 1;
+
+
+
+        Vector3 position = transform.position;
+        position.x += moveX * speed;
+        position.x = Mathf.Max(minX, position.x);
+        position.x = Mathf.Min(maxX, position.x);
+        transform.position = position;
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("attack") == false)
         {
-            var hit = Physics2D.Raycast(
-                transform.position + new Vector3(0, downWallCheckY)
-                , new Vector2(0, -1), 100, wallLayer);
-            if (hit.transform)
+            if (moveX != 0)
             {
-                ingDownJump = true;
-                collider2D.isTrigger = true;
+                // moveX양수면 180도 로테이션
+                float rotateY = 0;
+                if (moveX < 0)
+                    rotateY = 180;
+
+                //var rotation = transform.rotation;
+                //rotation.y = rotateY;
+                //transform.rotation = rotation;
+
+                transform.rotation = new Quaternion(0, rotateY, 0, 0);
+
+                animator.Play("run");
             }
+            else
+                animator.Play("idle");
         }
     }
 
-
-    bool ingDownJump = false;
-
-    private void OnTriggerExit2D(Collider2D collision)
+    public GameObject bubble;
+    public Transform bubbleSpawnPos;
+    private void FireBubble()
     {
-        if (ingDownJump)
+        // 버블 날리기
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            ingDownJump = false;
-            collider2D.isTrigger = false;
+            Instantiate(bubble, bubbleSpawnPos.position, transform.rotation);
         }
     }
-
-    public float jumpForce = 500f;
+    public float jumpForce = 1100f;
     private void Jump()
     {
         // 점프할 때 벽을 뚫어야함
@@ -104,54 +126,52 @@ public class Player : MonoBehaviour
             return true;
         return false;
     }
-
-    public GameObject bubble;
-    public Transform bubbleSpawnPos;
-    private void FireBubble()
+    private void OnDrawGizmos()
     {
-        // 버블 날리기
-        if (Input.GetKeyDown(KeyCode.Space))
+        DrawRay(transform.position);
+
+        // 좌.
+        DrawRay(transform.position + new Vector3(-groundCheckOffsetX, 0, 0));
+
+        // 우.
+        DrawRay(transform.position + new Vector3(groundCheckOffsetX, 0, 0));
+    }
+
+    private void DrawRay(Vector3 position)
+    {
+        Gizmos.DrawRay(position + new Vector3(0, downWallCheckY, 0), new Vector2(0, -1) * 20f);
+    }
+    public LayerMask wallLayer;
+    public float downWallCheckY = -1.1f;
+    private void DownJump()
+    {
+        // s키 아래점프
+        // 점프 가능한지 판단
+        // 아래로 광선을 쏴서 벽이 있따면 아래로 점프
+        if (rigidbody2D.velocity.y == 0 && Input.GetKeyDown(KeyCode.S))
         {
-            Instantiate(bubble, bubbleSpawnPos.position, transform.rotation);
+            var hit = Physics2D.Raycast(
+                transform.position + new Vector3(0, downWallCheckY)
+                , new Vector2(0, -1), 20, wallLayer);
+            if (hit.transform)
+            {
+                Debug.Log(hit.point);
+                ingDownJump = true;
+                collider2D.isTrigger = true;
+            }
         }
     }
-    public float minX, maxX;
 
-    private void Move()
+
+    bool ingDownJump = false;
+
+    void OnTriggerExit2D(Collider2D collision)
     {
-        // WASD, W위로, A왼쪽,S아래, D오른쪽
-        float moveX = 0;
-
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) moveX = -1;
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) moveX = 1;
-
-
-
-        Vector3 position = transform.position;
-        position.x += moveX * speed;
-        position.x = Mathf.Max(minX, position.x);
-        position.x = Mathf.Min(maxX, position.x);
-        transform.position = position;
-
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("attack") == false)
+        Debug.Log("탈출");
+        if (ingDownJump)
         {
-            if (moveX != 0)
-            {
-                // moveX양수면 180도 로테이션
-                float rotateY = 0;
-                if (moveX < 0)
-                    rotateY = 180;
-
-                //var rotation = transform.rotation;
-                //rotation.y = rotateY;
-                //transform.rotation = rotation;
-
-                transform.rotation = new Quaternion(0, rotateY, 0, 0);
-
-                animator.Play("run");
-            }
-            else
-                animator.Play("idle");
+            ingDownJump = false;
+            collider2D.isTrigger = false;
         }
     }
 }

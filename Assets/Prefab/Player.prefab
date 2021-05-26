@@ -155,7 +155,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!58 &513319494160420940
 CircleCollider2D:
@@ -170,9 +170,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.15}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.85
 --- !u!114 &513319494160420939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,13 +189,14 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   collider2D: {fileID: 0}
   animator: {fileID: 0}
+  velo: {x: 0, y: 0}
+  minX: -13
+  maxX: 13
+  bubble: {fileID: 8334333040607535663, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
+  bubbleSpawnPos: {fileID: 1607365332}
+  jumpForce: 1100
+  groundCheckOffsetX: 0.4
   wallLayer:
     serializedVersion: 2
     m_Bits: 512
-  downWallCheckY: -2.1
-  jumpForce: 1100
-  groundCheckOffsetX: 0.4
-  bubble: {fileID: 8334333040607535663, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
-  bubbleSpawnPos: {fileID: 1607365332}
-  minX: -13
-  maxX: 13
+  downWallCheckY: -2.9
