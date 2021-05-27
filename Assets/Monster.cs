@@ -13,6 +13,8 @@ public class Monster : MonoBehaviour
         rigidbody2D = GetComponent<Rigidbody2D>();
     }
     public float speed = 0.1f;
+    public string monsterName;
+
     void FixedUpdate()
     {
         var pos = rigidbody2D.position;

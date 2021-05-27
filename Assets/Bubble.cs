@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
+    internal int testint;
+    public int testint2;
     static public List<Bubble> Items = new List<Bubble>();
     public int moveForwardFrame = 6;
     public int currentFrame = 0;
@@ -118,7 +120,8 @@ public class Bubble : MonoBehaviour
     {
         FASTMODE,
         FREEFLY,
-        NONE
+        NONE,
+        Capture
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -134,7 +137,7 @@ public class Bubble : MonoBehaviour
     {
         if (state == State.FREEFLY)
         {
-            
+
             if (tr.CompareTag("Player"))
             {
                 //플레이어
@@ -142,7 +145,7 @@ public class Bubble : MonoBehaviour
                 // 플레이어가 방향키를 위로 하고 있다면
                 bool pressedUpKey = Input.GetKey(KeyCode.W)
                     || Input.GetKey(KeyCode.UpArrow);
-                if (pressedUpKey 
+                if (pressedUpKey
                     && transform.position.y + jumpHeight < tr.position.y)
                 {
                     // 버블을 터트리지말고 놔두자
@@ -151,6 +154,26 @@ public class Bubble : MonoBehaviour
                 }
                 else
                     ExplosionByPlayer();
+            }
+        }
+        else if (state == State.FASTMODE)
+        {
+            if (tr.CompareTag("Enemy"))
+            {
+                // 적을 안보이게 하자
+                tr.gameObject.SetActive(false);
+                // 버블 트랜스폼에 자식으로 달자
+                tr.parent = transform;
+
+                // 버블의 상태를 캡처 상태로 변경
+                state = State.Capture;
+                string monsterName = tr.GetComponent<Monster>().monsterName;
+                // 버블 이미지를 몬스터 잡은 애니메이션 플레이
+                GetComponent<Animator>().Play(monsterName + "Bubble");
+
+                // 버블이 몇초 후에 터짐.
+                // 시간이 지날수록 녹색, 파란색, 노란색, 빨간색
+
             }
         }
     }
