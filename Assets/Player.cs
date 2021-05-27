@@ -5,17 +5,125 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 8f;
+    public float speed = 0.1f;
     new public Rigidbody2D rigidbody2D;
-    new public Collider2D collider2D;
+    new public CircleCollider2D collider2D;
     public Animator animator;
-    public Vector2 velo;
+    public float wallOffset = 0.02f;
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        collider2D = GetComponent<Collider2D>();
+        collider2D = GetComponent<CircleCollider2D>();
         animator = GetComponent<Animator>();
         Application.targetFrameRate = 60;
+
+
+        RaycastHit2D rightMostHit = new RaycastHit2D();
+        RaycastHit2D leftMostHit = new RaycastHit2D();
+        Vector2 checkPosion = transform.position;
+
+        // 오른쪽 체크
+        int count = 0;
+        checkPosion.x += 100f;
+        rightMostHit = Physics2D.Raycast(checkPosion
+            , Vector2.left, 100f, wallLayer);
+        while (count++ < 10)
+        {
+            checkPosion.x = rightMostHit.point.x - 1.01f;
+            var hit = Physics2D.Raycast(checkPosion, Vector2.left, 1f, wallLayer);
+            if (hit.transform == null)
+                break;
+            rightMostHit = hit;
+        }
+        checkPosion.x -= 1;
+        var hit0 = Physics2D.Raycast(checkPosion, Vector2.right, 2f, wallLayer);
+        rightMostHit = hit0;
+        Debug.Log("최종 우측 벽 위치 " + rightMostHit.point.x);
+        maxX = rightMostHit.point.x - collider2D.radius - wallOffset;
+        
+
+        // 왼쪽 체크
+        count = 0;
+        checkPosion.x -= 100f;
+        leftMostHit = Physics2D.Raycast(checkPosion
+            , Vector2.right, 100f, wallLayer);
+        while (count++ < 10)
+        {
+            checkPosion.x = leftMostHit.point.x + 1.01f;
+            var hit = Physics2D.Raycast(checkPosion, Vector2.right, 1f, wallLayer);
+            if (hit.transform == null)
+                break;
+            leftMostHit = hit;
+        }
+        // 오른쪽으로 1 이동, 다시 왼쪽으로 레이 발사
+        checkPosion.x += 1;
+        var hit1 = Physics2D.Raycast(checkPosion, Vector2.left, 2f, wallLayer);
+        leftMostHit = hit1;
+        Debug.Log("최종 좌측 벽 위치 " + leftMostHit.point.x);
+        minX = leftMostHit.point.x + collider2D.radius + wallOffset;
+        {
+
+            //RaycastHit2D rightmostHit = new RaycastHit2D();
+            //RaycastHit2D Leftmost = new RaycastHit2D();
+            //RaycastHit2D hit;
+            //Vector2 checkPosition = transform.position;
+            //int count = 0;
+            //List<RaycastHit2D> hits = new List<RaycastHit2D>();
+            //float wallWidth = 1.01f;
+            //while (count++ < 10) // 최대 10회만 검사.
+            //{
+            //    hit = Physics2D.Raycast(checkPosition, Vector2.right, 100f, wallLayer);
+            //    if (hit.transform == null)
+            //        break;
+            //    hits.Add(hit);
+            //    rightmostHit = hit; // 마지막 벽이 2중 벽일때 바로 앞에 벽을 마지막 오른쪽 벽으로 하자.
+            //    checkPosition.x = hit.point.x + wallWidth; //
+            //};
+
+            //if (hits.Count >= 2)
+            //{
+            //    var previousHit = hits[hits.Count - 2];
+            //    if (rightmostHit.point.x < previousHit.point.x + wallWidth + 0.01f)
+            //    {
+            //        rightmostHit = previousHit;
+            //    }
+            //}
+
+            //count = 0;
+            //hits.Clear();
+            //checkPosition = transform.position;
+            //while (count++ < 10) // 최대 10회만 검사.
+            //{
+            //    hit = Physics2D.Raycast(checkPosition, Vector2.left, 100f, wallLayer);
+            //    if (hit.transform == null)
+            //        break;
+            //    hits.Add(hit);
+            //    Leftmost = hit;
+            //    checkPosition.x = hit.point.x - 1.01f; // 1.01은 벽 두께
+            //};
+
+            //if (hits.Count >= 2)
+            //{
+            //    var previousHit = hits[hits.Count - 2];
+            //    if (Leftmost.point.x > previousHit.point.x - wallWidth - 0.01f)
+            //    {
+            //        Leftmost = previousHit;
+
+            //        if (hits.Count >= 3) // 왼쪽은 3중벽이어서 추가 확인
+            //        {
+            //            previousHit = hits[hits.Count - 3];
+            //            if (Leftmost.point.x > previousHit.point.x - wallWidth - 0.01f)
+            //            {
+            //                Leftmost = previousHit;
+            //            }
+            //        }
+            //    }
+            //}
+
+            //float halfSize = collider2D.bounds.size.x * 0.5f + wallOffset;
+            //maxX = rightmostHit.point.x - halfSize;
+            //minX = Leftmost.point.x + halfSize;
+        }
     }
     private void Update()
     {
@@ -27,10 +135,6 @@ public class Player : MonoBehaviour
         Jump();
         // 아래점프
         DownJump();
-        //// 속도제한
-        //velo = rigidbody2D.velocity;
-        //velo.y = velo.y < -15f ? -15f : velo.y;
-        //rigidbody2D.velocity = velo;
     }
     public float minX, maxX;
     private void Move()
@@ -142,7 +246,7 @@ public class Player : MonoBehaviour
         Gizmos.DrawRay(position + new Vector3(0, downWallCheckY, 0), new Vector2(0, -1) * 20f);
     }
     public LayerMask wallLayer;
-    public float downWallCheckY = -1.1f;
+    public float downWallCheckY = -2.1f;
     private void DownJump()
     {
         // s키 아래점프

@@ -170,9 +170,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.15}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.85
+  m_Radius: 1
 --- !u!114 &513319494160420939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,9 +189,9 @@ MonoBehaviour:
   rigidbody2D: {fileID: 0}
   collider2D: {fileID: 0}
   animator: {fileID: 0}
-  velo: {x: 0, y: 0}
-  minX: -13
-  maxX: 13
+  wallOffset: 0.02
+  minX: 0
+  maxX: 0
   bubble: {fileID: 8334333040607535663, guid: 3d7d8886673521848823d7f2af1770fd, type: 3}
   bubbleSpawnPos: {fileID: 1607365332}
   jumpForce: 1100
@@ -199,4 +199,4 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 512
-  downWallCheckY: -2.9
+  downWallCheckY: -2.1
