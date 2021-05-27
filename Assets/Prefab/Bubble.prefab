@@ -183,7 +183,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.1
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -208,10 +208,12 @@ MonoBehaviour:
   currentFrame: 0
   speed: 1
   rigidbody2D: {fileID: 0}
-  gravityScale: -0.7
+  gravityScale: -0.2
   wallLayer:
     serializedVersion: 2
     m_Bits: 512
+  nearPlayerCheckDistance: 1.9
+  nearBubbleDistance: 2.2
 --- !u!114 &315975175398828355
 MonoBehaviour:
   m_ObjectHideFlags: 0

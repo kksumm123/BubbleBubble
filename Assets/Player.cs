@@ -5,13 +5,35 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    static public Player instance;
     public float speed = 0.1f;
     new public Rigidbody2D rigidbody2D;
     new public CircleCollider2D collider2D;
     public Animator animator;
     public float wallOffset = 0.02f;
+    public enum StateType
+    {
+        Ground,
+        Jump,
+        DownJump,
+        FreeFall,
+        ingDownJump,
+        DownJumpExitDwonGround // 다운 점프 후 밑에 있는 벽 통과 끝 - 땅으로 떨어지는 중
+    }
+    [SerializeField] StateType state = StateType.Ground;
+    StateType State
+    {
+        get { return state; }
+        set
+        {
+            Debug.Log($"<color=#ff0000>{state} => {value}</color>");
+            state = value;
+        }
+    }
+
     private void Awake()
     {
+        instance = this;
         rigidbody2D = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<CircleCollider2D>();
         animator = GetComponent<Animator>();
@@ -40,7 +62,7 @@ public class Player : MonoBehaviour
         rightMostHit = hit0;
         Debug.Log("최종 우측 벽 위치 " + rightMostHit.point.x);
         maxX = rightMostHit.point.x - collider2D.radius - wallOffset;
-        
+
 
         // 왼쪽 체크
         count = 0;
@@ -145,8 +167,6 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) moveX = -1;
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) moveX = 1;
 
-
-
         Vector3 position = transform.position;
         position.x += moveX * speed;
         position.x = Mathf.Max(minX, position.x);
@@ -191,8 +211,9 @@ public class Player : MonoBehaviour
         // 점프할 때 벽을 뚫어야함
         // 낙하시에는 뚫으면 안됨
         // 속도가 음수일 때, 이전 y값과 비교시 -일 때
-        if (ingDownJump == false && rigidbody2D.velocity.y < 0)
+        if (State == StateType.Jump && rigidbody2D.velocity.y < 0)
         {
+            State = StateType.FreeFall;
             collider2D.isTrigger = false;
         }
 
@@ -205,6 +226,7 @@ public class Player : MonoBehaviour
                 rigidbody2D.velocity = Vector2.zero;
                 rigidbody2D.AddForce(new Vector2(0, jumpForce));
                 collider2D.isTrigger = true;
+                State = StateType.Jump;
             }
         }
     }
@@ -252,29 +274,39 @@ public class Player : MonoBehaviour
         // s키 아래점프
         // 점프 가능한지 판단
         // 아래로 광선을 쏴서 벽이 있따면 아래로 점프
-        if (rigidbody2D.velocity.y == 0 && Input.GetKeyDown(KeyCode.S))
+        if (State == StateType.Ground)
         {
-            var hit = Physics2D.Raycast(
-                transform.position + new Vector3(0, downWallCheckY)
-                , new Vector2(0, -1), 20, wallLayer);
-            if (hit.transform)
+            if (rigidbody2D.velocity.y == 0 && Input.GetKeyDown(KeyCode.S))
             {
-                Debug.Log(hit.point);
-                ingDownJump = true;
-                collider2D.isTrigger = true;
+                var hit = Physics2D.Raycast(
+                    transform.position + new Vector3(0, downWallCheckY)
+                    , new Vector2(0, -1), 20, wallLayer);
+                if (hit.transform)
+                {
+                    Debug.Log(hit.point);
+                    State = StateType.DownJump;
+                    collider2D.isTrigger = true;
+                }
             }
         }
     }
 
-
-    bool ingDownJump = false;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (State == StateType.DownJumpExitDwonGround)
+        {
+            if (IsGround())
+            {
+                State = StateType.Ground;
+            }
+        }
+    }
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("탈출");
-        if (ingDownJump)
+        if (State == StateType.DownJump)
         {
-            ingDownJump = false;
+            State = StateType.DownJumpExitDwonGround;
             collider2D.isTrigger = false;
         }
     }

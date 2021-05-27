@@ -1,15 +1,25 @@
 ﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
+    static public List<Bubble> Items = new List<Bubble>();
     public int moveForwardFrame = 6;
     public int currentFrame = 0;
     public float speed = 0.7f;
     new public Rigidbody2D rigidbody2D;
-    public float gravityScale = -0.7f;
+    public float gravityScale = -0.2f;
+    private void Awake()
+    {
+        Items.Add(this);
+    }
+    private void OnDestroy()
+    {
+        Items.Remove(this);
+    }
     // 앞쪽 방향으로 이동., 6프레임 움직이고 나서 위로 이동(중력에 의해)
     void Start()
     {
@@ -50,11 +60,56 @@ public class Bubble : MonoBehaviour
         }
         else
         {
-            state = State.FREEFLY;
-            rigidbody2D.gravityScale = gravityScale;
-            enabled = false;
+            float distance = Vector3.Distance(Player.instance.transform.position
+                    , transform.position);
+
+            if (distance < nearPlayerCheckDistance)
+            {
+                // 공룡이 인근에 있으면 자신(버블)을 터트리자
+                ExplosionByPlayer();
+            }
+            else
+            {
+                state = State.FREEFLY;
+                rigidbody2D.gravityScale = gravityScale;
+                GetComponent<Collider2D>().isTrigger = false;
+                enabled = false;
+            }
+
         }
     }
+    public float nearPlayerCheckDistance = 1.9f;
+    public float nearBubbleDistance = 2.2f;
+    private void ExplosionByPlayer()
+    {
+        ////// 인근의 버블을 모두 터트리자
+        // 모든 버블에 접근하자
+        // 인근의 버블을 모으자
+        // 인근의 버블을 모두 터트리자
+        Vector2 pos = transform.position;
+        List<Bubble> nearBubbles = new List<Bubble>();
+        FindNearBubbles(pos, nearBubbles);
+
+        nearBubbles.ForEach(x => Destroy(x.gameObject));
+    }
+
+    private void FindNearBubbles(Vector2 pos, List<Bubble> nearBubbles)
+    {
+        nearBubbles.Add(this);
+        foreach (var item in Items)
+        {
+            //pos 가까이(2.2)에 있는 버블 모으자
+            if (nearBubbles.Contains(item))
+                continue;
+            float distance = Vector2.Distance(item.transform.position, pos);
+            if (distance < nearBubbleDistance)
+            {
+                nearBubbles.Add(item);
+                FindNearBubbles(item.transform.position, nearBubbles);
+            }
+        }
+    }
+
 
     // 버블이 앞으로 나아가는 상태 - 몬스터 닿으면 몬스터 잡힘
     // 버블이 자유롭게 이동하는 상태 - 플레이어가 닿으면 버블 터짐
@@ -78,10 +133,19 @@ public class Bubble : MonoBehaviour
     {
         if (state == State.FREEFLY)
         {
+            
             if (tr.CompareTag("Player"))
             {
                 //플레이어
-                Destroy(gameObject);
+                // 플레이어가 나보다 높게 있다면
+                // 플레이어가 방향키를 위로 하고 있다면
+                if (true)
+                {
+                    // 버블을 터트리지말고 놔두자
+                    //버블이 작아졌다가 터지는 트윈효과
+                }
+                else
+                    ExplosionByPlayer();
             }
         }
     }
