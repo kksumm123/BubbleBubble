@@ -169,12 +169,30 @@ public class Bubble : MonoBehaviour
                 state = State.Capture;
                 string monsterName = tr.GetComponent<Monster>().monsterName;
                 // 버블 이미지를 몬스터 잡은 애니메이션 플레이
-                GetComponent<Animator>().Play(monsterName + "Bubble");
-
-                // 버블이 몇초 후에 터짐.
-                // 시간이 지날수록 녹색, 파란색, 노란색, 빨간색
-
+                grabedMonster = tr.gameObject;
+                StartCoroutine(BubbleExplosionCo(monsterName));
             }
         }
+    }
+    public GameObject grabedMonster;
+
+    public List<float> bubbleExplosionTime;
+    private IEnumerator BubbleExplosionCo(string prefix)
+    {
+        // 버블이 몇초 후에 터짐.
+        // 시간이 지날수록 녹색, 파란색, 노란색, 빨간색
+
+        // prefix + 1
+        // prefix + 2
+        // prefix + 3
+        for (int i = 0; i < bubbleExplosionTime.Count; i++)
+        {
+            GetComponent<Animator>().Play(prefix + (i + 1));
+            yield return new WaitForSeconds(bubbleExplosionTime[i]);
+        }
+        // 터지는 과정 진행
+        grabedMonster.transform.parent = null;
+        grabedMonster.SetActive(true);
+        Destroy(gameObject);
     }
 }

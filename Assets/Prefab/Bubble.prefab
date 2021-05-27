@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba06078faf2bb64c8cfc941e61a37ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testint2: 0
   moveForwardFrame: 6
   currentFrame: 0
   speed: 1
@@ -215,6 +216,12 @@ MonoBehaviour:
   nearPlayerCheckDistance: 1.9
   nearBubbleDistance: 2.2
   jumpHeight: 0.5
+  grabedMonster: {fileID: 0}
+  bubbleExplosionTime:
+  - 2
+  - 2
+  - 2
+  - 2
 --- !u!114 &315975175398828355
 MonoBehaviour:
   m_ObjectHideFlags: 0

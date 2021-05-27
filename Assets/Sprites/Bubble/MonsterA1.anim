@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MonsterABubbleBlue
+  m_Name: MonsterA1
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,11 +20,11 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 3812086773978394453, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
+      value: {fileID: 2312032397328807481, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
     - time: 0.16666667
-      value: {fileID: -1611306995343629284, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
+      value: {fileID: -8040870958322424410, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
     - time: 0.33333334
-      value: {fileID: 1088975216346164175, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
+      value: {fileID: 3819911538654936425, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -44,9 +44,9 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 3812086773978394453, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
-    - {fileID: -1611306995343629284, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
-    - {fileID: 1088975216346164175, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
+    - {fileID: 2312032397328807481, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
+    - {fileID: -8040870958322424410, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
+    - {fileID: 3819911538654936425, guid: dbbc54a06bcdcf4488dd2f3ab1d842e9, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -55,7 +55,7 @@ AnimationClip:
     m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
-    m_CycleOffset: 30
+    m_CycleOffset: 1
     m_HasAdditiveReferencePose: 0
     m_LoopTime: 1
     m_LoopBlend: 0
