@@ -129,6 +129,7 @@ public class Bubble : MonoBehaviour
     {
         OnTouchCollision(collision.transform);
     }
+    public float jumpHeight = 0.5f; // 플레이어가 버블 밟은걸로 인정되는 높이
     void OnTouchCollision(Transform tr)
     {
         if (state == State.FREEFLY)
@@ -139,10 +140,14 @@ public class Bubble : MonoBehaviour
                 //플레이어
                 // 플레이어가 나보다 높게 있다면
                 // 플레이어가 방향키를 위로 하고 있다면
-                if (true)
+                bool pressedUpKey = Input.GetKey(KeyCode.W)
+                    || Input.GetKey(KeyCode.UpArrow);
+                if (pressedUpKey 
+                    && transform.position.y + jumpHeight < tr.position.y)
                 {
                     // 버블을 터트리지말고 놔두자
                     //버블이 작아졌다가 터지는 트윈효과
+                    tr.GetComponent<Player>().StartJump();
                 }
                 else
                     ExplosionByPlayer();
